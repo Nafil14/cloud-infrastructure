@@ -156,6 +156,7 @@ footer {
     <div>
         <span class="badge">● Running in Docker</span>
         <h1>Infrastructure<br>Demo</h1>
+        <p><strong>Application Version: 2.0</strong></p>
         <p>A simple application with a real health endpoint, built to demonstrate containerization, deployment automation and infrastructure monitoring.</p>
         <div class="actions">
             <a class="btn primary" href="#overview">Explore Project ↓</a>
