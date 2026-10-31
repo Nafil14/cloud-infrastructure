@@ -39,16 +39,33 @@ jobs:
 
  
   deploy-to-ec2:
+    
+    name: Deploy to EC2 through SSM
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:  deploy-to-ec2:
     name: Deploy to EC2 through SSM
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
+      - name: Debug GitHub OIDC context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Ref: $GITHUB_REF"
+          echo "Event: $GITHUB_EVENT_NAME"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::610952687944:role/GitHubActionsDeployRole
           aws-region: ap-south-1
-
+        
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::610952687944:role/GitHubActionsDeployRole
+          aws-region: ap-south-1
+   
       - name: Deploy Docker image to EC2
         env:
           IMAGE: docker.io/nafil14356/cloud-infrastructure:${{ github.sha }}
