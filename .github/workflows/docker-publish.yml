@@ -42,12 +42,11 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
+            - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume:role-to-assume: arn:aws:iam::610952687944:role/GitHubActionsDeployRole
+          role-to-assume: arn:aws:iam::610952687944:role/GitHubActionsDeployRole
           aws-region: ap-south-1
-
       - name: Deploy Docker image to EC2
         env:
           IMAGE: docker.io/nafil14356/cloud-infrastructure:${{ github.sha }}
