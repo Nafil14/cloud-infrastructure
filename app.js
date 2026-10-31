@@ -3,12 +3,14 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
     if (req.url === '/health') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({
-            status: 'healthy',
-            application: 'Infrastructure Demo'
-        }));
-        return;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+        status: 'healthy',
+        application: 'Infrastructure Demo',
+        version: '2.1'
+    }));
+    return;
+
     }
 
     if (req.url === '/') {
@@ -155,8 +157,9 @@ footer {
 <section class="hero">
     <div>
         <span class="badge">● Running in Docker</span>
-        <h1>Infrastructure<br>Demo</h1>
-        <p><strong>Application Version: 2.0</strong></p>
+        <h1>Infrastructure<br>D</h1>
+        <p><strong>Application Version: 2.1</strong></p>
+        <p>Deployment: Automated through GitHub Actions</p>
         <p>A simple application with a real health endpoint, built to demonstrate containerization, deployment automation and infrastructure monitoring.</p>
         <div class="actions">
             <a class="btn primary" href="#overview">Explore Project ↓</a>
