@@ -1,4 +1,4 @@
-
+```yaml
 name: Build and Deploy Docker Image
 
 on:
@@ -48,7 +48,7 @@ jobs:
           echo "Ref: $GITHUB_REF"
           echo "Event: $GITHUB_EVENT_NAME"
 
-                - name: Inspect GitHub OIDC claims
+      - name: Inspect GitHub OIDC claims
         run: |
           TOKEN=$(curl -s \
             -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
@@ -74,3 +74,4 @@ jobs:
 
       - name: Verify AWS identity
         run: aws sts get-caller-identity
+```
