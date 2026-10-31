@@ -1,7 +1,7 @@
-```yaml
+
 name: Build and Deploy Docker Image
 
-on:
+"on":
   push:
     branches:
       - master
@@ -15,7 +15,6 @@ jobs:
   build-and-push:
     name: Build and Publish
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,26 +37,16 @@ jobs:
             docker.io/nafil14356/cloud-infrastructure:${{ github.sha }}
             docker.io/nafil14356/cloud-infrastructure:latest
 
-  deploy-to-ec2:
+  test-aws-oidc:
     name: Test AWS OIDC Authentication
     needs: build-and-push
     runs-on: ubuntu-latest
-
     steps:
-      - name: Debug GitHub OIDC context
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Ref: $GITHUB_REF"
-          echo "Event: $GITHUB_EVENT_NAME"
-
       - name: Inspect GitHub OIDC claims
-        env:
-          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TOKEN=$(curl -fsS \
             -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com" \
-            | jq -r '.value')
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com" | jq -r '.value')
 
           PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2 | tr '_-' '/+' | base64 -d 2>/dev/null)
 
