@@ -42,12 +42,13 @@ jobs:
     name: Test AWS OIDC Authentication
     needs: build-and-push
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - name: Debug GitHub OIDC context
+      - name: Debug GitHub context
         run: |
           echo "Repository: $GITHUB_REPOSITORY"
-          echo "Ref: $GITHUB_REF"
+          echo "Branch: $GITHUB_REF"
           echo "Event: $GITHUB_EVENT_NAME"
 
       - name: Inspect GitHub OIDC claims
@@ -61,17 +62,32 @@ jobs:
 
           TOKEN=$(echo "$TOKEN_RESPONSE" | jq -er '.value')
 
-          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2 | tr '_-' '/+' | base64 -d)
+          PAYLOAD=$(TOKEN="$TOKEN" python3 -c '
+          import os, json, base64
 
-          echo "$PAYLOAD" | jq '{
-            iss,
-            aud,
-            sub,
-            repository,
-            ref,
-            repository_id,
-            repository_owner_id
-          }'
+          token = os.environ["TOKEN"]
+          payload = token.split(".")[1]
+          payload += "=" * (-len(payload) % 4)
+
+          claims = json.loads(base64.urlsafe_b64decode(payload))
+
+          selected = {
+              key: claims.get(key)
+              for key in [
+                  "iss",
+                  "aud",
+                  "sub",
+                  "repository",
+                  "ref",
+                  "repository_id",
+                  "repository_owner_id"
+              ]
+          }
+
+          print(json.dumps(selected, indent=2))
+          ')
+
+          echo "$PAYLOAD"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
