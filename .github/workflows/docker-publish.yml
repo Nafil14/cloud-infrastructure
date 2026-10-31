@@ -68,4 +68,3 @@ jobs:
 
       - name: Verify AWS identity
         run: aws sts get-caller-identity
-```
