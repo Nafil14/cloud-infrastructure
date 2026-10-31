@@ -1,7 +1,7 @@
 
 name: Build and Deploy Docker Image
 
-"on":
+on:
   push:
     branches:
       - master
@@ -15,6 +15,7 @@ jobs:
   build-and-push:
     name: Build and Publish
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -41,14 +42,26 @@ jobs:
     name: Test AWS OIDC Authentication
     needs: build-and-push
     runs-on: ubuntu-latest
-    steps:
-      - name: Inspect GitHub OIDC claims
-        run: |
-          TOKEN=$(curl -fsS \
-            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com" | jq -r '.value')
 
-          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2 | tr '_-' '/+' | base64 -d 2>/dev/null)
+    steps:
+      - name: Debug GitHub OIDC context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Ref: $GITHUB_REF"
+          echo "Event: $GITHUB_EVENT_NAME"
+
+      - name: Inspect GitHub OIDC claims
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TOKEN_RESPONSE=$(curl -fsS \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com")
+
+          TOKEN=$(echo "$TOKEN_RESPONSE" | jq -er '.value')
+
+          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2 | tr '_-' '/+' | base64 -d)
 
           echo "$PAYLOAD" | jq '{
             iss,
