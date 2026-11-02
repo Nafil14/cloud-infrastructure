@@ -1,249 +1,239 @@
 
-const http = require('http');
+const http = require("http");
+
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
-    if (req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-        status: 'healthy',
-        application: 'Infrastructure Demo',
-        version: '2.1'
-    }));
-    return;
+  if (req.url === "/health") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return res.end(
+      JSON.stringify({
+        status: "healthy",
+        application: "Cloud Infrastructure Portfolio",
+        author: "Nafil"
+      })
+    );
+  }
 
-    }
+  if (req.url !== "/") {
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    return res.end("404 - Page not found");
+  }
 
-    if (req.url === '/') {
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-        res.end(`<!DOCTYPE html>
+  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+
+  res.end(`<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Infrastructure Demo</title>
-<style>
-:root {
-    --blue: #2563eb;
-    --dark: #142b4d;
-    --muted: #58708f;
-    --border: #e0eaf8;
-    --bg: #f5f9ff;
-}
-* { box-sizing: border-box; }
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    color: var(--dark);
-    background: white;
-}
-nav {
-    height: 76px;
-    padding: 0 7%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-}
-.brand { font-size: 21px; font-weight: 700; }
-.brand span { color: var(--blue); margin-right: 8px; }
-.nav-tag { color: var(--muted); font-size: 14px; }
-.hero {
-    padding: 76px 7%;
-    display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 40px;
-    align-items: center;
-    background: linear-gradient(120deg, #f0f7ff, #fff);
-}
-.badge {
-    display: inline-block;
-    padding: 8px 13px;
-    border-radius: 30px;
-    background: #dcfce7;
-    color: #166534;
-    font-size: 13px;
-    font-weight: 600;
-}
-h1 {
-    font-size: clamp(36px, 5vw, 56px);
-    letter-spacing: -1.8px;
-    margin: 22px 0 12px;
-}
-.hero p {
-    max-width: 620px;
-    color: var(--muted);
-    font-size: 17px;
-    line-height: 1.8;
-}
-.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-.btn {
-    display: inline-block;
-    border: 0;
-    border-radius: 9px;
-    padding: 13px 19px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-}
-.primary { background: var(--blue); color: white; }
-.secondary { background: white; color: var(--dark); border: 1px solid #cbdcf5; }
-.art {
-    text-align: center;
-    font-size: 100px;
-    padding: 25px;
-}
-.art small {
-    display: block;
-    font-size: 15px;
-    color: var(--muted);
-    margin-top: 10px;
-}
-main { padding: 42px 7% 55px; }
-.section-title { font-size: 24px; margin: 0 0 22px; }
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-}
-.card {
-    padding: 25px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: white;
-    box-shadow: 0 5px 20px rgba(35, 76, 130, 0.04);
-}
-.card-icon { font-size: 25px; }
-.card h2 { font-size: 17px; margin: 16px 0 10px; }
-.value { font-size: 20px; font-weight: 700; color: #16a34a; }
-.muted { color: var(--muted); font-size: 14px; line-height: 1.7; }
-.endpoint {
-    padding: 8px 0;
-    border-bottom: 1px solid #edf2fa;
-    font-size: 14px;
-}
-.endpoint:last-child { border: 0; }
-code {
-    background: #eef4ff;
-    padding: 3px 6px;
-    border-radius: 5px;
-    color: #1d4ed8;
-}
-#health-result { margin-top: 12px; font-size: 13px; }
-footer {
-    text-align: center;
-    padding: 28px 15px;
-    background: var(--bg);
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.8;
-}
-@media (max-width: 760px) {
-    .hero { grid-template-columns: 1fr; padding: 45px 6%; }
-    .art { font-size: 65px; padding: 5px; }
-    .cards { grid-template-columns: 1fr; }
-    nav { padding: 0 6%; }
-    .nav-tag { display: none; }
-    main { padding: 35px 6%; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nafil's Cloud Infrastructure and DevOps engineering portfolio.">
+  <title>Nafil | Cloud Infrastructure Portfolio</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b1120;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #253047;
+    }
+
+    .logo { font-size: 21px; font-weight: bold; color: #60a5fa; }
+    header span { color: #9ca3af; font-size: 13px; }
+
+    main { max-width: 1050px; margin: auto; padding: 75px 24px; }
+
+    .status {
+      display: inline-block;
+      padding: 7px 13px;
+      border: 1px solid #166534;
+      border-radius: 20px;
+      color: #86efac;
+      background: #052e16;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .status::before { content: "● "; }
+
+    h1 { font-size: clamp(36px, 6vw, 58px); line-height: 1.15; }
+    h1 span { color: #60a5fa; }
+
+    .intro {
+      max-width: 690px;
+      color: #aab5c5;
+      font-size: 17px;
+      margin: 22px 0 35px;
+    }
+
+    .section-title { font-size: 23px; margin: 55px 0 20px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: #141e30;
+      border: 1px solid #29364d;
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .card h3 { color: #93c5fd; margin-bottom: 9px; }
+    .card p { color: #aab5c5; font-size: 14px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .tag {
+      background: #172b46;
+      border: 1px solid #29476a;
+      color: #bfdbfe;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .stage {
+      background: #172b46;
+      border: 1px solid #315174;
+      padding: 13px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .arrow { color: #60a5fa; font-size: 20px; }
+
+    .contact {
+      margin-top: 55px;
+      padding: 25px;
+      border-radius: 12px;
+      background: #141e30;
+      border: 1px solid #29364d;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #8290a5;
+      border-top: 1px solid #253047;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 18px 5%; }
+      main { padding-top: 50px; }
+      header span { font-size: 11px; }
+    }
+  </style>
 </head>
 <body>
-<nav>
-    <div class="brand"><span>◆</span> Infrastructure Demo</div>
-    <div class="nav-tag">Node.js · Docker · Cloud Learning Lab</div>
-</nav>
+  <header>
+    <div class="logo">NAFIL.dev</div>
+    <span>Cloud Infrastructure Portfolio</span>
+  </header>
 
-<section class="hero">
-    <div>
-        <span class="badge">● Running in Docker</span>
-        <h1>Infrastructure<br>D</h1>
-        <p><strong>Application Version: 2.1</strong></p>
-        <p>Deployment: Automated through GitHub Actions</p>
-        <p>A simple application with a real health endpoint, built to demonstrate containerization, deployment automation and infrastructure monitoring.</p>
-        <div class="actions">
-            <a class="btn primary" href="#overview">Explore Project ↓</a>
-            <button class="btn secondary" id="check-health">Check Health ↗</button>
-        </div>
-        <div id="health-result" role="status" aria-live="polite"></div>
+  <main>
+    <div class="status">Application is running</div>
+
+    <h1>Building and Automating<br><span>Cloud Infrastructure.</span></h1>
+
+    <p class="intro">
+      Hi, I'm <strong>Nafil</strong>, an Electronics and Communication
+      Engineering graduate focused on IT infrastructure, cloud technologies,
+      Linux systems, and DevOps automation.
+      This project demonstrates how I build, deploy, and manage
+      containerized applications on AWS.
+    </p>
+
+    <h2 class="section-title">Project Overview</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Cloud Infrastructure</h3>
+        <p>AWS VPC, public subnet, internet gateway, security groups,
+        and EC2 provisioning using Terraform.</p>
+      </div>
+      <div class="card">
+        <h3>Containerization</h3>
+        <p>Docker-based application packaging and image publishing
+        through Docker Hub.</p>
+      </div>
+      <div class="card">
+        <h3>CI/CD Automation</h3>
+        <p>GitHub Actions builds and publishes images, then deploys
+        updates to EC2 through AWS Systems Manager.</p>
+      </div>
+      <div class="card">
+        <h3>Secure Authentication</h3>
+        <p>GitHub Actions authenticates to AWS using IAM
+        OpenID Connect (OIDC), without long-lived AWS keys.</p>
+      </div>
     </div>
-    <div class="art" aria-label="Cloud and server illustration">
-        ☁️
-        <div>🐳</div>
-        <small>Application • Container • Infrastructure</small>
+
+    <h2 class="section-title">Technology Stack</h2>
+    <div class="tags">
+      <span class="tag">AWS EC2</span>
+      <span class="tag">VPC</span>
+      <span class="tag">Terraform</span>
+      <span class="tag">Docker</span>
+      <span class="tag">GitHub Actions</span>
+      <span class="tag">AWS SSM</span>
+      <span class="tag">IAM OIDC</span>
+      <span class="tag">Linux</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Nginx</span>
     </div>
-</section>
 
-<main id="overview">
-    <h2 class="section-title">Application Overview</h2>
-    <div class="cards">
-        <article class="card">
-            <div class="card-icon">◉</div>
-            <h2>Application Health</h2>
-            <div class="value" id="status">Checking...</div>
-            <p class="muted" id="status-description">Waiting for the health check.</p>
-        </article>
-        <article class="card">
-            <div class="card-icon">▣</div>
-            <h2>Container Runtime</h2>
-            <div><strong>Docker</strong></div>
-            <p class="muted">Container name: infrastructure-demo-app<br>Application port: 3000</p>
-        </article>
-        <article class="card">
-            <div class="card-icon">⌘</div>
-            <h2>Available Endpoints</h2>
-            <div class="endpoint"><code>/</code> — Home page</div>
-            <div class="endpoint"><code>/health</code> — Health check</div>
-            <p class="muted">Use the health endpoint to test application availability.</p>
-        </article>
+    <h2 class="section-title">Automated Deployment Pipeline</h2>
+    <div class="pipeline">
+      <div class="stage">Git Push</div>
+      <span class="arrow">→</span>
+      <div class="stage">GitHub Actions</div>
+      <span class="arrow">→</span>
+      <div class="stage">Docker Hub</div>
+      <span class="arrow">→</span>
+      <div class="stage">AWS OIDC</div>
+      <span class="arrow">→</span>
+      <div class="stage">EC2 via SSM</div>
     </div>
-</main>
 
-<footer>
-    <strong>Infrastructure Demo</strong> &nbsp; | &nbsp; Node.js + Docker
-    <br>Built for hands-on infrastructure engineering practice.
-</footer>
+    <div class="contact">
+      <h2>About This Project</h2>
+      <p>
+        This is a hands-on infrastructure project designed to demonstrate
+        cloud provisioning, containerization, secure authentication,
+        and automated application deployment.
+      </p>
+      <p style="margin-top:12px; color:#93c5fd;">
+        Built and maintained by Nafil.
+      </p>
+    </div>
+  </main>
 
-<script>
-async function checkHealth() {
-    const status = document.getElementById('status');
-    const description = document.getElementById('status-description');
-    const result = document.getElementById('health-result');
-
-    status.textContent = 'Checking...';
-    result.textContent = 'Contacting /health...';
-
-    try {
-        const response = await fetch('/health');
-        const data = await response.json();
-
-        if (!response.ok || data.status !== 'healthy') {
-            throw new Error('Health check failed');
-        }
-
-        status.textContent = 'Healthy';
-        description.textContent = 'The application responded successfully.';
-        result.textContent = '✓ Health check passed at ' +
-            new Date().toLocaleTimeString();
-    } catch (error) {
-        status.textContent = 'Unreachable';
-        description.textContent = 'The health check did not succeed.';
-        result.textContent = '✗ Health check failed. Check the server logs.';
-    }
-}
-
-document.getElementById('check-health').addEventListener('click', checkHealth);
-checkHealth();
-</script>
+  <footer>
+    © ${new Date().getFullYear()} Nafil | Cloud Infrastructure Portfolio
+  </footer>
 </body>
 </html>`);
-        return;
-    }
-
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
 });
 
-server.listen(3000, '0.0.0.0', () => {
-    console.log('Server listening on port 3000');
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(\`Portfolio application running on port \${PORT}\`);
 });
