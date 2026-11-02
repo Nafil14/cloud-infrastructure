@@ -235,5 +235,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(\`Portfolio application running on port \${PORT}\`);
+  console.log(`Portfolio application running on port ${PORT}`);
 });
